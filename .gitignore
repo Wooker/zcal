@@ -1,2 +1,4 @@
 date
 *.out
+*.o
+Makefile
