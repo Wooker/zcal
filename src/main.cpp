@@ -1,6 +1,8 @@
 #include <iostream>
-//#include <time.h>
+//#include "../date/include/date/date.h"
+//#include "../date/include/date/tz.h"
 #include "../headers/format.h"
+#include "../headers/today.h"
 
 int main (int argc, char* argv[])
 {
@@ -36,6 +38,13 @@ int main (int argc, char* argv[])
 	
 	Calendar cal;
 	cal.show();
+
+//	auto today = date::floor<date::days>(std::chrono::system_clock::now());
+//	std::cout << today << '\n';
+
+	Today today;
+	today.print();
+
 
 	return 0;
 }
