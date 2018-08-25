@@ -1,21 +1,31 @@
 #include "../headers/today.h"
 
-Today::Today()
+// Constructor
+Today::Today ()
 {
 	time_t raw_time;
 
 	time (&raw_time);
 	time_info = localtime (&raw_time);
 
-	year 	= time_info->tm_year;
-	month 	= time_info->tm_mon;
-	day 	= time_info->tm_wday;
-
+	// TODO fix wkday_name structure to print correctly
+	char buff[30];
+	sprintf (buff, "%.3s", wkday_name[time_info->tm_wday]);
+	day_str = buff;
+	sprintf (buff, "%2d", time_info->tm_mday);
+	day_num = buff;
+	sprintf (buff, "%.3s", month_name[time_info->tm_mon]);
+	month = buff;
+	sprintf (buff, "%d", time_info->tm_year + 1900);
+	year = buff;
 }
 
-Today::~Today() {}
+// Destructor
+Today::~Today () {}
 
-void Today::print()
+
+// Print entire date
+void Today::print ()
 {
 	printf ("%s", asctime (time_info));
 }
