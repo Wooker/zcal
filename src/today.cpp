@@ -8,7 +8,9 @@ Today::Today ()
 	time (&raw_time);
 	time_info = localtime (&raw_time);
 
-	// TODO fix wkday_name structure to print correctly
+	// time_info - main time var
+
+	// Parsing strings from time_info
 	char buff[30];
 	sprintf (buff, "%.3s", wkday_name[time_info->tm_wday]);
 	day_str = buff;

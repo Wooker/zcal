@@ -17,15 +17,7 @@ int main (int argc, char* argv[])
 	///////////////////////////////////////////////////////
 	
 	Calendar cal;
-	cal.show ();
-
 	Today today;
-	today.print ();
 	
-	std::string date_str = cal.as_str (today.time_info);
-	std::cout << date_str << std::endl;
-
-	std::cout << today.day_str << std::endl;
-
 	return 0;
 }
