@@ -16,8 +16,11 @@ int main (int argc, char* argv[])
 
 	///////////////////////////////////////////////////////
 	
-	Calendar cal;
+
 	Today today;
+
+	Calendar cal;
+	cal.show (today);
 	
 	return 0;
 }

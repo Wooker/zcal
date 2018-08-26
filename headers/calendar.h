@@ -3,13 +3,14 @@
 
 #include <iostream>
 #include <string>
+#include "../headers/today.h"
 
 struct Calendar 
 {
 	Calendar ();
 	~Calendar ();
 
-	void show ();
+	void show (Today today);
 	std::string fmt (size_t margin, 
 			size_t t_width, std::string text);
 	std::string as_str (const struct tm * date);
