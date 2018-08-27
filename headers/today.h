@@ -21,15 +21,15 @@ struct Today
 	Today ();
 	~Today ();
 
-	struct tm * time_info;
+	tm * time_info;
 
 	std::string year;
-	std::string month;
+	std::string month_str;
+	int month_num;         // range (0, 11)
 	std::string day_str;
-	std::string day_num;
+	int day_num;
 
 	void print ();
-	std::string as_str (struct tm *);
 };
 
 #endif  // TODAY_H_

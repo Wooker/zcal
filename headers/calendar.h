@@ -13,7 +13,7 @@ struct Calendar
 	void show (Today today);
 	std::string fmt (size_t margin, 
 			size_t t_width, std::string text);
-	std::string as_str (const struct tm * date);
+	void sync (Today today);
 };
 
 #endif  // CALENDAR_H_
