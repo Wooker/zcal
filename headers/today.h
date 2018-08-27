@@ -2,7 +2,6 @@
 #define TODAY_H_
 
 #include <string>
-#include <ctime>
 
 const short DAY_NUM = 7;
 const short MONTH_NUM = 12;

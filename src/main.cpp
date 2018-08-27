@@ -20,7 +20,10 @@ int main (int argc, char* argv[])
 	Today today;
 
 	Calendar cal;
-	cal.show (today);
+	int days_now = cal.sync_days_now (today);
+	int days_before = cal.sync_days_before (today);
+
+	cal.show_dates (cal.combine_days (cal.sync_days_now (today)));
 	
 	return 0;
 }
