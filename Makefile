@@ -11,9 +11,6 @@ main.o: src/main.cpp headers/calendar.h headers/day.h headers/month.h
 calendar.o: src/calendar.cpp headers/calendar.h headers/today.h
 	$(CPP) -c src/calendar.cpp -o calendar.o
 
-today.o: src/today.cpp headers/today.h
-	$(CPP) -c src/today.cpp -o today.o
-
 month.o: src/month.cpp headers/month.h
 	$(CPP) -c src/month.cpp -o month.o
 
