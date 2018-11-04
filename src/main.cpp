@@ -1,7 +1,8 @@
 #include <iostream>
 
+#include "../headers/day.h"
+#include "../headers/month.h"
 #include "../headers/calendar.h"
-#include "../headers/today.h"
 
 
 int main (int argc, char* argv[])
@@ -25,14 +26,20 @@ int main (int argc, char* argv[])
 
 	Calendar cal;
 
-	Day today (Month (time_info->tm_mon + 1, time_info->tm_year + 1900), 
+	Day today (Month (time_info->tm_mon + 1, 
+			time_info->tm_year + 1900), 
 			time_info->tm_wday, 
 			time_info->tm_mday);
+	
+	int a, b;
+	while (std::cin) {
+		std::cin >> a;
+		std::cin >> b;
 
-	Day new_year (Month (1, 2018), 1, 1);
-	today.print ();
+	Day day (Month (a, b), 1, 1);
 
-	std::vector<int> months_sync1 = cal.sync_months (new_year);
+	std::vector<int> months_sync1 = cal.sync_months (day);
+	}
 
 	return 0;
 }

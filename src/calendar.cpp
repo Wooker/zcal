@@ -101,12 +101,12 @@ std::vector<int> Calendar::sync_months (Day day)
 	// next(current + 1) months
 	for (int i = -1; i <= 1; i++) {
 		Month month (day.month_num + i, day.year_num);
-		//month.print ();
+		month.print ();
 
 		months_sync.push_back (month.total_days);
 	}
 
-	//std::cout << "###################" << std::endl;
+	std::cout << "###################" << std::endl;
 
 	return months_sync;
 }
