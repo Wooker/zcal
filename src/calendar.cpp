@@ -1,7 +1,6 @@
+#include <iomanip>
 #include <iostream>
 #include "../headers/calendar.h"
-
-#define SPACE 4;
 
 
 Calendar::Calendar () {}
@@ -14,6 +13,22 @@ Calendar::~Calendar () {}
 // 	days numbers
 // 	months
 // 	events
+
+// Display function for calendar
+void Calendar::show (Today today)
+{
+	// Titles
+	std::cout << "\033[1;37m";
+	std::cout << std::setw(25) << "Mo Tu We Th Fr Sa Su\n"
+		  << std::left<< today.month_str + "\033[0m";
+
+	// Numbers
+	std::vector< std::vector<std::string> > weeks = get_weeks (today);
+
+	print_weeks (weeks);
+
+}
+
 std::string Calendar::fmt (size_t margin, size_t t_width, std::string text)
 {
     std::string result;
@@ -36,100 +51,81 @@ std::string Calendar::fmt (size_t margin, size_t t_width, std::string text)
     return result;
 }
 
-// Display function for calendar
-void Calendar::show (Today today)
+void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
 {
-	std::cout << "\033[1;37m";
-	std::cout << fmt (4, 20, "Mo Tu We Th Fr Sa Su")
-		  << fmt (0, 24, today.month_str + "\033[0m") << std::endl;
+	for (int i = 0; i < weeks.size (); i++) {
+		for (int j = 0; j < weeks.at (0).size (); j++) {
+			if (stoi (weeks.at (i).at (j)) < 10)
+				std::cout << "  " << weeks.at (i).at (j);
+			else
+				std::cout << " " << weeks.at (i).at (j);
 
-	
+			if (i == weeks.size () - 1 & j == weeks.at (0).size () - 1) {
+				for (int k = 1; k <= 3; k++)
+					std::cout << weeks.at (i).at (j + k) + " ";
+			}
+		}
+		std::cout << std::endl << "   ";
+	}
 }
 
-void Calendar::show_dates (std::vector<std::string> days_vec)
+std::vector< std::vector<std::string> > Calendar::get_weeks (Today today)
 {
+	std::vector<std::string> dates = get_dates (today);
+	std::vector<std::vector<std::string>> buff;
 
-	for (int i = 0; i < days_vec.size (); i++)
-		if (i < 9)
-			std::cout << "  " + std::to_string (i + 1);
-		else if ((i) % 9 == 0)
-			std::cout << std::endl << " " + std::to_string (i + 1);
-		else
-			std::cout << " " + std::to_string (i + 1);
-		
-	std::cout << std::endl;
+	for (int i = 0; i < dates.size () / DAY_NUM; i++) {
+		std::vector<std::string> temp;
+
+		for (int j = 0; j < DAY_NUM; j++) {
+			temp.push_back (dates.at (i * DAY_NUM + j));
+
+			if (i == (dates.size () / DAY_NUM) - 1 & j == DAY_NUM - 1) {
+				for (int k = 1; k <= dates.size () % DAY_NUM; k++) {
+					temp.push_back (dates.at (i * DAY_NUM + j + k));
+				}
+			}
+		}
+
+		buff.push_back (temp);
+	}
+
+	return buff;
 }
 
-// Synchronize calendar
-int Calendar::sync_days_now (Today today)
+// Formats dates to be straight in column,
+// converts them to string and returns dates string.
+std::vector<std::string> Calendar::get_dates (Today today)
 {
+	// Number of days in prev. current and next months
+	std::vector<int> months_sync = sync_months (today);
 
-	int month_now = today.time_info->tm_mon + 1;
-	int month_before = month_now - 1;
+	// Vector for storing dates' numbers
+	std::vector<std::string> dates;
 
-	int days_now = 31;
-
-	int year  = today.time_info->tm_year;
-	bool leap_year = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-
-	if (month_now == 4 || month_now == 6 || month_now == 9 || month_now == 11)
-	{
-		days_now = 30;
-	}
-	else if (month_now == 2)
-	{
-		if (leap_year)
-			days_now = 28;
-		else 
-			days_now = 29;
+	// Add days of current and next months
+	for (int k = 0; k < months_sync.size (); k++) {
+		for (int i = 0; i < months_sync.at (k); i++) {
+			dates.push_back (std::to_string (i + 1));
+		}
 	}
 
-	return days_now;
+	return dates;
 }
 
-int Calendar::sync_days_before (Today today)
+std::vector<int> Calendar::sync_months (Today today)
 {
+	std::vector<int> months_sync;
 
-	int month_now = today.time_info->tm_mon + 1;
-	int month_before = month_now - 1;
+	// Adding total days of 
+	// prev.(current - 1) 
+	// current(current + 0) 
+	// next(current + 1) months
+	for (int i = -1; i <= 1; i++) {
+		Month month (today.month_num + i, today.year_num);
 
-	int days_before = 30;
-
-	int year  = today.time_info->tm_year;
-	bool leap_year = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-
-	if (month_now == 1)
-	{
-		month_before = 12;
-		days_before = 31;
-	}
-	else if (month_now == 8)
-		days_before = 31;
-
-	else if (month_now == 4 || month_now == 6 || month_now == 9 || month_now == 11)
-	{
-		days_before = 31;
-	}
-	else if (month_now == 2)
-		days_before = 31;
-	else if (month_now == 3)
-	{
-		if (leap_year)
-			days_before = 28;
-		else 
-			days_before = 29;
+		months_sync.push_back (month.total_days);
 	}
 
-	return days_before;
-}
-
-std::vector<std::string> Calendar::combine_days (int days)
-{
-	// Adding day strings to vector
-	std::vector<std::string> days_vec;
-
-	for (int i = 0; i < days; i++)
-		days_vec.push_back(std::to_string(i + 1));
-
-	return days_vec;
+	return months_sync;
 }

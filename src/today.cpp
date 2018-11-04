@@ -1,7 +1,7 @@
 #include "../headers/today.h"
 
 // Constructor
-Today::Today ()
+Today::Today () : Day (0, 0, 0, 0)
 {
 	time_t raw_time;
 
@@ -12,14 +12,18 @@ Today::Today ()
 
 	// Parsing strings from time_info
 	char buff[30];
-	sprintf (buff, "%d", time_info->tm_year + 1900);
-	year = buff;
-	sprintf (buff, "%.3s", wkday_name[time_info->tm_wday]);
-	day_str = buff;
-	day_num = time_info->tm_wday;
-	sprintf (buff, "%.3s", month_name[time_info->tm_mon]);
-	month_str = buff;
-	month_num = time_info->tm_mon;
+
+	year_num = time_info->tm_year + 1900;
+
+	// To be in range of 1-12 add 1
+	month_num = time_info->tm_mon + 1;
+	month_str = month_name[month_num - 1];
+
+	// To be in range of 1-7 add 1
+	wday_num = time_info->tm_wday + 1;
+	wday_str = wkday_name[wday_num - 1];
+
+	day_num = time_info->tm_mday;
 }
 
 // Destructor

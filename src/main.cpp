@@ -1,6 +1,8 @@
 #include <iostream>
+
 #include "../headers/calendar.h"
 #include "../headers/today.h"
+
 
 int main (int argc, char* argv[])
 {
@@ -18,12 +20,10 @@ int main (int argc, char* argv[])
 	
 
 	Today today;
-
 	Calendar cal;
-	int days_now = cal.sync_days_now (today);
-	int days_before = cal.sync_days_before (today);
 
-	cal.show_dates (cal.combine_days (cal.sync_days_now (today)));
-	
+	today.print ();
+	today.print_day ();
+
 	return 0;
 }
