@@ -2,10 +2,10 @@ CPP = g++
 STD = -std=c++11
 SRC = src/main.cpp src/calendar.cpp src/today.cpp
 
-main: main.o calendar.o today.o day.o month.o
-	$(CPP) $(STD) main.o calendar.o today.o day.o month.o -o a.out
+main: main.o calendar.o day.o month.o
+	$(CPP) $(STD) main.o calendar.o day.o month.o -o a.out
 
-main.o: src/main.cpp headers/today.h headers/calendar.h headers/day.h headers/month.h
+main.o: src/main.cpp headers/calendar.h headers/day.h headers/month.h
 	$(CPP) -c src/main.cpp -o main.o
 
 calendar.o: src/calendar.cpp headers/calendar.h headers/today.h

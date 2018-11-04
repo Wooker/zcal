@@ -7,29 +7,21 @@
 
 const short DAY_NUM = 7;
 
-static const char wkday_name[][4] = {
-	"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"
-};
-
-class Day
+class Day : public Month
 {
 public:
-	Day (int month, int wday, int day, int year);
+	Day (Month, int, int);
 	~Day ();
 
-	enum week_day {Mo = 1, Tu, We, Th, Fr, Sa, Su};
-
 	int year_num;
-
-	std::string month_str;
-	int month_num;
 
 	std::string wday_str;
 	int wday_num;
 
 	int day_num;
 
-	void print_day ();
+	void print ();
+	void print_asctime (tm *time_info);
 };
 
 #endif // DAY_H_
