@@ -4,7 +4,6 @@
 #include "../headers/month.h"
 #include "../headers/calendar.h"
 
-
 int main (int argc, char* argv[])
 {
 	/*
@@ -26,8 +25,7 @@ int main (int argc, char* argv[])
 
 	Calendar cal;
 
-	Day today (Month (time_info->tm_mon + 1, 
-			time_info->tm_year + 1900), 
+	Day today (Month (time_info->tm_mon + 1, time_info->tm_year + 1900), 
 			time_info->tm_wday, 
 			time_info->tm_mday);
 	

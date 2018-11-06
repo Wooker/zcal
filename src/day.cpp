@@ -2,9 +2,11 @@
 
 #include <iostream>
 
-Day::Day (Month month, int wday, int day) : Month(month)
+Day::Day (Month month_var, int wday, int day)
 {
 	wday_num = wday;
+
+	month = month_var;
 
 	switch (wday_num)
 	{
@@ -18,17 +20,21 @@ Day::Day (Month month, int wday, int day) : Month(month)
 	}
 
 	day_num = day;
-
-	year_num = month.year_num;
 }
 
 Day::~Day () {}
 
+inline int Day::day () { return day_num; }
+
+inline int Day::wday_n () { return wday_num; }
+
+inline std::string Day::wday_s () { return wday_str; }
+
 void Day::print ()
 {
-	printf ("%s (%d), ", month_str.c_str(), month_num);
-	printf ("%s (%d), ", wday_str.c_str(), wday_num);
-	printf ("Day: %d, ", day_num);
-	printf ("Year: %d, ", year_num);
+	printf ("%s (%d), ", month.month_s().c_str(), month.month_n());
+	printf ("%s (%d), ", wday_s().c_str(), wday_n());
+	printf ("Day: %d, ", day());
+	printf ("Year: %d, ", month.year());
 	printf ("\n");
 }

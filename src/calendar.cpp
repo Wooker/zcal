@@ -20,7 +20,7 @@ void Calendar::show (Day day)
 	// Titles
 	std::cout << "\033[1;37m";
 	std::cout << std::setw(25) << "Mo Tu We Th Fr Sa Su\n"
-		  << std::left<< day.month_str + "\033[0m";
+		  << std::left<< day.month.month_s () + "\033[0m";
 
 	// Numbers
 	std::vector< std::vector<std::string> > weeks = get_weeks (day);
@@ -100,10 +100,11 @@ std::vector<int> Calendar::sync_months (Day day)
 	// current(current + 0) 
 	// next(current + 1) months
 	for (int i = -1; i <= 1; i++) {
-		Month month (day.month_num + i, day.year_num);
+		Month month (day.month.month_n () + i, day.month.year ());
 		month.print ();
+		day.print ();
 
-		months_sync.push_back (month.total_days);
+		months_sync.push_back (month.days ());
 	}
 
 	std::cout << "###################" << std::endl;

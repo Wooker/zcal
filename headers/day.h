@@ -7,18 +7,22 @@
 
 const short DAY_NUM = 7;
 
-class Day : public Month
+class Day
 {
+	Month month;
+
+	int day_num;
+
+	int wday_num;
+	std::string wday_str;
+
 public:
 	Day (Month, int, int);
 	~Day ();
 
-	int year_num;
-
-	std::string wday_str;
-	int wday_num;
-
-	int day_num;
+	int day ();
+	int wday_n ();
+	std::string wday_s();
 
 	void print ();
 	void print_asctime (tm *time_info);

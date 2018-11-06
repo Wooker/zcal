@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-// Constructor
+// Constructors
+Month::Month () {}
+
 Month::Month (int month, int year)
 {
 	month_num = month;
@@ -50,10 +52,18 @@ Month::Month (int month, int year)
 // Destructor
 Month::~Month () {}
 
+inline int Month::year () { return year_num; }
+
+inline int Month::days () { return total_days; }
+
+inline int Month::month_n () { return month_num; }
+
+inline std::string Month::month_s () { return month_str; }
+
 void Month::print ()
 {
-	printf ("%s (%d), ", month_str.c_str (), month_num);
-	printf ("Year: %d, ", year_num);
-	printf ("Days: %d", total_days);
+	printf ("%s (%d), ", month_s().c_str (), month_n());
+	printf ("Year: %d, ", year());
+	printf ("Days: %d", days());
 	printf ("\n");
 }
