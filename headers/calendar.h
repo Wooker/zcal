@@ -13,19 +13,13 @@ struct Calendar
 
 	void show (Day);
 
-	std::vector<std::string> get_dates (Day);
 
 	std::vector< std::vector<std::string> > get_weeks (Day);
 	void print_weeks (std::vector< std::vector<std::string> > weeks);
 
-	std::string fmt (size_t margin, size_t t_width, std::string text);
+	std::vector<std::string> get_month_dates (Month);
 
-	int sync_days_now (Day);
-	int sync_days_before (Day);
-	int sync_days_next (Day);
-
-	std::vector<int> sync_months (Day);
-	std::vector<std::string> combine_days(int days_before, int days_now, int days_next);
+	std::vector<int> get_month_total_days (Month);
 };
 
 #endif  // CALENDAR_H_

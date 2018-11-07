@@ -29,15 +29,9 @@ int main (int argc, char* argv[])
 			time_info->tm_wday, 
 			time_info->tm_mday);
 	
-	int a, b;
-	while (std::cin) {
-		std::cin >> a;
-		std::cin >> b;
+	std::vector< std::vector<std::string> > weeks = cal.get_weeks (today);
 
-	Day day (Month (a, b), 1, 1);
-
-	std::vector<int> months_sync1 = cal.sync_months (day);
-	}
+	cal.show (today);
 
 	return 0;
 }

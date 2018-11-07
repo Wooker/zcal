@@ -20,7 +20,7 @@ void Calendar::show (Day day)
 	// Titles
 	std::cout << "\033[1;37m";
 	std::cout << std::setw(25) << "Mo Tu We Th Fr Sa Su\n"
-		  << std::left<< day.month.month_s () + "\033[0m";
+		  << std::left<< day.month().month_s () + "\033[0m";
 
 	// Numbers
 	std::vector< std::vector<std::string> > weeks = get_weeks (day);
@@ -32,7 +32,7 @@ void Calendar::show (Day day)
 void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
 {
 	for (int i = 0; i < weeks.size (); i++) {
-		for (int j = 0; j < weeks.at (0).size (); j++) {
+		for (int j = 0; j < weeks.at (i).size (); j++) {
 			if (stoi (weeks.at (i).at (j)) < 10)
 				std::cout << "  " << weeks.at (i).at (j);
 			else
@@ -49,20 +49,17 @@ void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
 
 std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 {
-	std::vector<std::string> dates = get_dates (day);
+	std::vector<std::string> dates = get_month_dates (day.month());
 	std::vector<std::vector<std::string>> buff;
 
-	for (int i = 0; i < dates.size () / DAY_NUM; i++) {
+	// (<=) because last weeks has less than 7 days
+	for (int i = 0; i <= dates.size () / DAY_NUM; i++) {
 		std::vector<std::string> temp;
 
 		for (int j = 0; j < DAY_NUM; j++) {
-			temp.push_back (dates.at (i * DAY_NUM + j));
+			if (i * DAY_NUM + j < dates.size())
+				temp.push_back (dates.at (i * DAY_NUM + j));
 
-			if (i == (dates.size () / DAY_NUM) - 1 & j == DAY_NUM - 1) {
-				for (int k = 1; k <= dates.size () % DAY_NUM; k++) {
-					temp.push_back (dates.at (i * DAY_NUM + j + k));
-				}
-			}
 		}
 
 		buff.push_back (temp);
@@ -71,12 +68,11 @@ std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 	return buff;
 }
 
-// Formats dates to be straight in column,
-// converts them to string and returns dates string.
-std::vector<std::string> Calendar::get_dates (Day day)
+// Return vector of strings with all days of three months
+std::vector<std::string> Calendar::get_month_dates (Month month)
 {
 	// Number of days in prev. current and next months
-	std::vector<int> months_sync = sync_months (day);
+	std::vector<int> months_sync = get_month_total_days (month);
 
 	// Vector for storing dates' numbers
 	std::vector<std::string> dates;
@@ -91,7 +87,7 @@ std::vector<std::string> Calendar::get_dates (Day day)
 	return dates;
 }
 
-std::vector<int> Calendar::sync_months (Day day)
+std::vector<int> Calendar::get_month_total_days (Month month)
 {
 	std::vector<int> months_sync;
 
@@ -100,14 +96,10 @@ std::vector<int> Calendar::sync_months (Day day)
 	// current(current + 0) 
 	// next(current + 1) months
 	for (int i = -1; i <= 1; i++) {
-		Month month (day.month.month_n () + i, day.month.year ());
-		month.print ();
-		day.print ();
+		Month month_new (month.month_n() + i, month.year());
 
-		months_sync.push_back (month.days ());
+		months_sync.push_back (month_new.days());
 	}
-
-	std::cout << "###################" << std::endl;
 
 	return months_sync;
 }

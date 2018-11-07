@@ -9,7 +9,7 @@ const short DAY_NUM = 7;
 
 class Day
 {
-	Month month;
+	Month m_month;
 
 	int day_num;
 
@@ -23,6 +23,7 @@ public:
 	int day ();
 	int wday_n ();
 	std::string wday_s();
+	Month month ();
 
 	void print ();
 	void print_asctime (tm *time_info);
