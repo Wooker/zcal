@@ -18,7 +18,7 @@ struct Calendar
 
 	std::vector<std::string> get_month_dates (Day);
 
-	std::vector<int> get_month_total_days (Month);
+	std::vector<std::string> get_month_total_days (Month);
 };
 
 #endif  // CALENDAR_H_

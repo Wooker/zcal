@@ -48,6 +48,7 @@ void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
 	}
 }
 
+// Returns vector of string vectors
 std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 {
 	std::vector<std::string> dates = get_month_dates (day);
@@ -72,7 +73,7 @@ std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 std::vector<std::string> Calendar::get_month_dates (Day day)
 {
 	// Number of days in prev. current and next months
-	std::vector<int> months_sync = get_month_total_days (day.month());
+	std::vector<std::string> months_sync = get_month_total_days (day.month());
 
 	// Vector for storing dates' numbers
 	std::vector<std::string> dates;
@@ -80,18 +81,21 @@ std::vector<std::string> Calendar::get_month_dates (Day day)
 	// Count days to add from previous month
 	int days_to_add = DAY_NUM - ((day.day() - day.wday_n() + DAY_NUM) % DAY_NUM) - 1;
 
-	int k = 0;
+	int k = 3;
 	if (day.wday_n() - (day.day() / DAY_NUM) == Mo)
 		k = 1;
 
 	// Add days of current and next months
-	for (k; k < months_sync.size (); k++) {
-		if (k == 0) {
+	for (k; k < months_sync.size(); k += 2) {
+		if (k == 1) {
+			dates.push_back (months_sync.at (k - 1));
 			for (int i = days_to_add; i >= 0; i--)
-				dates.push_back (std::to_string (months_sync.at (k) - i));
+				dates.push_back (std::to_string(stoi(months_sync.at (k)) - i));
 		} else {
-			for (int i = 0; i < months_sync.at (k); i++) {
-				dates.push_back (std::to_string (i + 1));
+			for (int i = 0; i < stoi(months_sync.at (k)); i++) {
+				if (i == 0)
+					dates.push_back (months_sync.at (k - 1));
+				dates.push_back (std::to_string(i + 1));
 			}
 		}
 	}
@@ -99,9 +103,9 @@ std::vector<std::string> Calendar::get_month_dates (Day day)
 	return dates;
 }
 
-std::vector<int> Calendar::get_month_total_days (Month month)
+std::vector<std::string> Calendar::get_month_total_days (Month month)
 {
-	std::vector<int> months_sync;
+	std::vector<std::string> months_sync;
 
 	// Adding total days of 
 	// prev.(current - 1) 
@@ -110,7 +114,8 @@ std::vector<int> Calendar::get_month_total_days (Month month)
 	for (int i = -1; i <= 1; i++) {
 		Month month_new (month.month_n() + i, month.year());
 
-		months_sync.push_back (month_new.days());
+		months_sync.push_back (month_new.month_s());
+		months_sync.push_back (std::to_string(month_new.days()));
 	}
 
 	return months_sync;

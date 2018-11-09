@@ -27,7 +27,10 @@ int main (int argc, char* argv[])
 			time_info->tm_wday, 
 			time_info->tm_mday);
 
-	cal.show (today);
+	std::vector<std::string> dates = cal.get_month_dates (today);
+	std::cout << dates.size() << std::endl;
+	for (int i = 0; i < dates.size(); i++)
+		std::cout << dates.at(i) << " ";
 
 	return 0;
 }
