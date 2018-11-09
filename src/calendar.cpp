@@ -19,6 +19,7 @@ void Calendar::show (Day day)
 {
 	// Titles
 	std::cout << "\033[1;37m";
+	std::cout << std::right << std::setw(16) << day.month().year() << std::endl;
 	std::cout << std::setw(25) << "Mo Tu We Th Fr Sa Su\n"
 		  << std::left<< day.month().month_s () + "\033[0m";
 
@@ -49,7 +50,7 @@ void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
 
 std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 {
-	std::vector<std::string> dates = get_month_dates (day.month());
+	std::vector<std::string> dates = get_month_dates (day);
 	std::vector<std::vector<std::string>> buff;
 
 	// (<=) because last weeks has less than 7 days
@@ -59,7 +60,6 @@ std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 		for (int j = 0; j < DAY_NUM; j++) {
 			if (i * DAY_NUM + j < dates.size())
 				temp.push_back (dates.at (i * DAY_NUM + j));
-
 		}
 
 		buff.push_back (temp);
@@ -69,18 +69,30 @@ std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 }
 
 // Return vector of strings with all days of three months
-std::vector<std::string> Calendar::get_month_dates (Month month)
+std::vector<std::string> Calendar::get_month_dates (Day day)
 {
 	// Number of days in prev. current and next months
-	std::vector<int> months_sync = get_month_total_days (month);
+	std::vector<int> months_sync = get_month_total_days (day.month());
 
 	// Vector for storing dates' numbers
 	std::vector<std::string> dates;
 
+	// Count days to add from previous month
+	int days_to_add = DAY_NUM - ((day.day() - day.wday_n() + DAY_NUM) % DAY_NUM) - 1;
+
+	int k = 0;
+	if (day.wday_n() - (day.day() / DAY_NUM) == Mo)
+		k = 1;
+
 	// Add days of current and next months
-	for (int k = 0; k < months_sync.size (); k++) {
-		for (int i = 0; i < months_sync.at (k); i++) {
-			dates.push_back (std::to_string (i + 1));
+	for (k; k < months_sync.size (); k++) {
+		if (k == 0) {
+			for (int i = days_to_add; i >= 0; i--)
+				dates.push_back (std::to_string (months_sync.at (k) - i));
+		} else {
+			for (int i = 0; i < months_sync.at (k); i++) {
+				dates.push_back (std::to_string (i + 1));
+			}
 		}
 	}
 

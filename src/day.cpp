@@ -37,6 +37,6 @@ void Day::print ()
 	printf ("%s (%d), ", month().month_s().c_str(), month().month_n());
 	printf ("%s (%d), ", wday_s().c_str(), wday_n());
 	printf ("Day: %d, ", day());
-	printf ("Year: %d, ", month().year());
+	printf ("Year: %d.", month().year());
 	printf ("\n");
 }

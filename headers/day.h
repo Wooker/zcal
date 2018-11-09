@@ -7,6 +7,8 @@
 
 const short DAY_NUM = 7;
 
+enum {Mo = 1, Tu, We, Th, Fr, Sa, Su = 0};
+
 class Day
 {
 	Month m_month;
