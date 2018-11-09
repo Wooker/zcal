@@ -27,10 +27,13 @@ int main (int argc, char* argv[])
 			time_info->tm_wday, 
 			time_info->tm_mday);
 
-	std::vector<std::string> dates = cal.get_month_dates (today);
-	std::cout << dates.size() << std::endl;
-	for (int i = 0; i < dates.size(); i++)
-		std::cout << dates.at(i) << " ";
+	Day day (Month(1, 2018), Mo, 1);
+	std::vector< std::vector<std::string> > weeks = cal.get_weeks (today);
+
+	for (int i = 0; i < weeks.size(); i++) {
+		for (int k = 0; k < weeks.at(i).size(); k++)
+			std::cout << weeks.at(i).at(k) << " ";
+	}
 
 	return 0;
 }

@@ -52,15 +52,25 @@ void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
 std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
 {
 	std::vector<std::string> dates = get_month_dates (day);
-	std::vector<std::vector<std::string>> buff;
+	std::vector< std::vector<std::string> > buff;
+
+	for (int k = 0; k < dates.size(); k++)
+		std::cout << dates.at(k) << " ";
+
+	std::cout << std::endl;
+
+	int days_with_space = DAY_NUM + 1;
 
 	// (<=) because last weeks has less than 7 days
-	for (int i = 0; i <= dates.size () / DAY_NUM; i++) {
+	for (int i = 0; i <= dates.size () / days_with_space; i++) {
 		std::vector<std::string> temp;
 
-		for (int j = 0; j < DAY_NUM; j++) {
-			if (i * DAY_NUM + j < dates.size())
-				temp.push_back (dates.at (i * DAY_NUM + j));
+		/*
+		 * SOMETHING THERE
+		 */
+		for (int j = 0; j < days_with_space; j++) {
+			if (i * days_with_space + j < dates.size())
+				temp.push_back (dates.at (i * days_with_space + j));
 		}
 
 		buff.push_back (temp);
@@ -81,19 +91,24 @@ std::vector<std::string> Calendar::get_month_dates (Day day)
 	// Count days to add from previous month
 	int days_to_add = DAY_NUM - ((day.day() - day.wday_n() + DAY_NUM) % DAY_NUM) - 1;
 
-	int k = 3;
+	std::string blank = "   ";
+
+	// if month starts at monday, k = 3, no need to iterate through prev. month,
+	// else k = 1, add last days from prev. month
+	int k = 1;
 	if (day.wday_n() - (day.day() / DAY_NUM) == Mo)
-		k = 1;
+		k = 3;
 
 	// Add days of current and next months
+	// k points on numbers in months_sync vector
 	for (k; k < months_sync.size(); k += 2) {
 		if (k == 1) {
-			dates.push_back (months_sync.at (k - 1));
+			dates.push_back (months_sync.at (k + 1));
 			for (int i = days_to_add; i >= 0; i--)
 				dates.push_back (std::to_string(stoi(months_sync.at (k)) - i));
 		} else {
 			for (int i = 0; i < stoi(months_sync.at (k)); i++) {
-				if (i == 0)
+				if (i == 0 & (day.wday_n() == Mo | k == 5))
 					dates.push_back (months_sync.at (k - 1));
 				dates.push_back (std::to_string(i + 1));
 			}
