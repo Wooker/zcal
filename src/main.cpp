@@ -27,7 +27,9 @@ int main (int argc, char* argv[])
 			time_info->tm_wday, 
 			time_info->tm_mday);
 
-	cal.show (today);
+	Day day (Month (12, 2018), Th, 27);
+
+	cal.show (day);
 
 	return 0;
 }

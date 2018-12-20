@@ -32,16 +32,32 @@ void Calendar::show (Day day)
 
 void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks, Day day)
 {
+	short same_days = 0;
+	for (int i = 0; i < weeks.size (); i++) {
+		for (int j = 0; j < weeks.at (i).size (); j++) {
+			if (stoi (weeks.at (i).at (j)) == day.day ())
+				same_days++;
+		}
+	}
+
+
+	short highlight = 0;
 	for (int i = 0; i < weeks.size (); i++) {
 		for (int j = 0; j < weeks.at (i).size (); j++) {
 			if (stoi (weeks.at (i).at (j)) < 10) {
-				if (stoi (weeks.at (i).at (j)) == day.day ())
-					weeks.at (i).at (j) = "\033[1;37m" + weeks.at (i).at (j) + "\033[0m";
+				if (stoi (weeks.at (i).at (j)) == day.day ()) {
+					highlight++;
+					if (highlight == same_days)
+						weeks.at (i).at (j) = "\033[1;37m" + weeks.at(i).at(j) + "\033[0m";
+				}
 				std::cout << "  " << weeks.at (i).at (j);
 			}
 			else {
-				if (stoi (weeks.at (i).at (j)) == day.day ())
-					weeks.at (i).at (j) = "\033[1;37m" + weeks.at (i).at (j) + "\033[0m";
+				if (stoi (weeks.at (i).at (j)) == day.day ()) {
+					highlight++;
+					if (highlight == same_days)
+						weeks.at (i).at (j) = "\033[1;37m" + weeks.at(i).at(j) + "\033[0m";
+				}
 				std::cout << " " << weeks.at (i).at (j);
 			}
 
@@ -85,10 +101,13 @@ std::vector<std::string> Calendar::get_month_dates (Day day)
 
 	// Count days to add from previous month
 	int days_to_add = DAY_NUM - ((day.day() - day.wday_n() + DAY_NUM) % DAY_NUM) - 1;
+	//std::cout << days_to_add << "-";
 
 	int k = 0;
-	if (day.wday_n() - (day.day() / DAY_NUM) == Mo)
-		k = 1;
+
+	//std::cout << day.wday_n() << "-";
+	//std::cout << day.day() / DAY_NUM << "-";
+	//std::cout << k << "-";
 
 	// Add days of current and next months
 	for (k; k < months_sync.size (); k++) {
@@ -112,8 +131,7 @@ std::vector<int> Calendar::get_month_total_days (Month month)
 	// Adding total days of 
 	// prev.(current - 1) 
 	// current(current + 0) 
-	// next(current + 1) months
-	for (int i = -1; i <= 1; i++) {
+	for (int i = -1; i < 1; i++) {
 		Month month_new (month.month_n() + i, month.year());
 
 		months_sync.push_back (month_new.days());
