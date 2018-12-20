@@ -26,18 +26,24 @@ void Calendar::show (Day day)
 	// Numbers
 	std::vector< std::vector<std::string> > weeks = get_weeks (day);
 
-	print_weeks (weeks);
+	print_weeks (weeks, day);
 
 }
 
-void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks)
+void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks, Day day)
 {
 	for (int i = 0; i < weeks.size (); i++) {
 		for (int j = 0; j < weeks.at (i).size (); j++) {
-			if (stoi (weeks.at (i).at (j)) < 10)
+			if (stoi (weeks.at (i).at (j)) < 10) {
+				if (stoi (weeks.at (i).at (j)) == day.day ())
+					weeks.at (i).at (j) = "\033[1;37m" + weeks.at (i).at (j) + "\033[0m";
 				std::cout << "  " << weeks.at (i).at (j);
-			else
+			}
+			else {
+				if (stoi (weeks.at (i).at (j)) == day.day ())
+					weeks.at (i).at (j) = "\033[1;37m" + weeks.at (i).at (j) + "\033[0m";
 				std::cout << " " << weeks.at (i).at (j);
+			}
 
 			if (i == weeks.size () - 1 & j == weeks.at (0).size () - 1) {
 				for (int k = 1; k <= 3; k++)

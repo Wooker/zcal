@@ -14,7 +14,7 @@ struct Calendar
 	void show (Day);
 
 	std::vector< std::vector<std::string> > get_weeks (Day);
-	void print_weeks (std::vector< std::vector<std::string> > weeks);
+	void print_weeks (std::vector< std::vector<std::string> > weeks, Day day);
 
 	std::vector<std::string> get_month_dates (Day);
 
