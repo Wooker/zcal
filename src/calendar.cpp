@@ -32,7 +32,9 @@ void Calendar::show (Day day)
 
 void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks, Day day)
 {
+	// Detect how many days with current date are in array 
 	short same_days = 0;
+
 	for (int i = 0; i < weeks.size (); i++) {
 		for (int j = 0; j < weeks.at (i).size (); j++) {
 			if (stoi (weeks.at (i).at (j)) == day.day ())
@@ -40,34 +42,35 @@ void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks, Day d
 		}
 	}
 
-
 	short highlight = 0;
+
 	for (int i = 0; i < weeks.size (); i++) {
 		for (int j = 0; j < weeks.at (i).size (); j++) {
-			if (stoi (weeks.at (i).at (j)) < 10) {
-				if (stoi (weeks.at (i).at (j)) == day.day ()) {
-					highlight++;
-					if (highlight == same_days)
-						weeks.at (i).at (j) = "\033[1;37m" + weeks.at(i).at(j) + "\033[0m";
-				}
-				std::cout << "  " << weeks.at (i).at (j);
-			}
-			else {
-				if (stoi (weeks.at (i).at (j)) == day.day ()) {
-					highlight++;
-					if (highlight == same_days)
-						weeks.at (i).at (j) = "\033[1;37m" + weeks.at(i).at(j) + "\033[0m";
-				}
-				std::cout << " " << weeks.at (i).at (j);
+
+			// Highlight current day
+			if (stoi (weeks.at (i).at (j)) == day.day ()) {
+				highlight++;
+
+				// Only last day with current date is highlighted
+				if (highlight == same_days)
+					weeks.at (i).at (j) = "\033[1;37m" + weeks.at(i).at(j) + "\033[0m";
 			}
 
+			// Print each day
+			std::cout << " " << weeks.at (i).at (j);
+
+			// IDK what is this here for
 			if (i == weeks.size () - 1 & j == weeks.at (0).size () - 1) {
 				for (int k = 1; k <= 3; k++)
-					std::cout << weeks.at (i).at (j + k) + " ";
+					std::cout << weeks.at (i).at (j + k) + "AAA";
 			}
 		}
-		std::cout << std::endl << "   ";
+
+		// To line up columns
+		if (i < weeks.size () - 1)
+			std::cout << std::endl << "   ";
 	}
+	std::cout << std::endl;
 }
 
 std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
@@ -115,8 +118,11 @@ std::vector<std::string> Calendar::get_month_dates (Day day)
 			for (int i = days_to_add; i >= 0; i--)
 				dates.push_back (std::to_string (months_sync.at (k) - i));
 		} else {
-			for (int i = 0; i < months_sync.at (k); i++) {
-				dates.push_back (std::to_string (i + 1));
+			for (int i = 1; i <= months_sync.at (k); i++) {
+				if (i < 10)
+					dates.push_back (" " + std::to_string (i));
+				else
+					dates.push_back (std::to_string (i));
 			}
 		}
 	}

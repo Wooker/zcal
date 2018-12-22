@@ -29,7 +29,7 @@ int main (int argc, char* argv[])
 
 	Day day (Month (12, 2018), Th, 27);
 
-	cal.show (day);
+	cal.show (today);
 
 	return 0;
 }
