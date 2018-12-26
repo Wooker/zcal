@@ -3,7 +3,7 @@ STD = -std=c++11
 SRC = src/main.cpp src/calendar.cpp src/today.cpp
 
 main: main.o calendar.o day.o month.o event.o
-	$(CPP) $(STD) main.o calendar.o day.o month.o event.o -o zcal
+	$(CPP) $(STD) main.o calendar.o day.o month.o event.o -o zcal.out
 
 main.o: src/main.cpp headers/calendar.h headers/day.h headers/month.h
 	$(CPP) -c src/main.cpp -o main.o
