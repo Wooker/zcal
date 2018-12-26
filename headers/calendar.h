@@ -1,7 +1,7 @@
 #ifndef CALENDAR_H_
 #define CALENDAR_H_
 
-#include "../headers/day.h"
+#include "../headers/event.h"
 
 #include <string>
 #include <vector>
@@ -13,8 +13,11 @@ struct Calendar
 
 	void show (Day);
 
+	void print_events (std::vector< Event >);
+
+	void print_weeks (std::vector< std::vector< std::string > >);
 	std::vector< std::vector<std::string> > get_weeks (Day);
-	void print_weeks (std::vector< std::vector<std::string> > weeks, Day day);
+	std::vector< std::vector<std::string> > highlight_days (std::vector< std::vector<std::string> >, Day);
 
 	std::vector<std::string> get_month_dates (Day);
 

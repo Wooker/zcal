@@ -24,13 +24,55 @@ void Calendar::show (Day day)
 		  << std::left<< day.month().month_s () + "\033[0m";
 
 	// Numbers
-	std::vector< std::vector<std::string> > weeks = get_weeks (day);
-
-	print_weeks (weeks, day);
-
+	std::vector< std::vector< std::string > > weeks = get_weeks (day);
+	print_weeks (weeks);
 }
 
-void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks, Day day)
+void Calendar::print_events (std::vector< Event > events)
+{
+}
+
+void Calendar::print_weeks (std::vector< std::vector< std::string > > weeks)
+{
+	for (int i = 0; i < weeks.size (); i++) {
+		for (int j = 0; j < weeks.at (i).size (); j++) {
+
+			std::cout << " " << weeks.at (i).at (j);
+
+			// IDK what is this here for
+			if (i == weeks.size () - 1 & j == weeks.at (0).size () - 1) {
+				for (int k = 1; k <= 3; k++)
+					std::cout << weeks.at (i).at (j + k) + "AAA";
+			}
+		}
+		// To line up columns
+		if (i < weeks.size () - 1)
+			std::cout << std::endl << "   ";
+	}
+	std::cout << std::endl;
+}
+
+std::vector< std::vector< std::string > > Calendar::get_weeks (Day day)
+{
+	std::vector<std::string> dates = get_month_dates (day);
+	std::vector< std::vector< std::string > > buff;
+
+	// (<=) because last weeks has less than 7 days
+	for (int i = 0; i <= dates.size () / DAY_NUM; i++) {
+		std::vector<std::string> temp;
+
+		for (int j = 0; j < DAY_NUM; j++) {
+			if (i * DAY_NUM + j < dates.size())
+				temp.push_back (dates.at (i * DAY_NUM + j));
+		}
+
+		buff.push_back (temp);
+	}
+
+	return highlight_days (buff, day);
+}
+
+std::vector< std::vector<std::string> > Calendar::highlight_days (std::vector< std::vector<std::string> > weeks, Day day)
 {
 	// Detect how many days with current date are in array 
 	short same_days = 0;
@@ -55,42 +97,10 @@ void Calendar::print_weeks (std::vector< std::vector<std::string> > weeks, Day d
 				if (highlight == same_days)
 					weeks.at (i).at (j) = "\033[1;37m" + weeks.at(i).at(j) + "\033[0m";
 			}
-
-			// Print each day
-			std::cout << " " << weeks.at (i).at (j);
-
-			// IDK what is this here for
-			if (i == weeks.size () - 1 & j == weeks.at (0).size () - 1) {
-				for (int k = 1; k <= 3; k++)
-					std::cout << weeks.at (i).at (j + k) + "AAA";
-			}
 		}
-
-		// To line up columns
-		if (i < weeks.size () - 1)
-			std::cout << std::endl << "   ";
-	}
-	std::cout << std::endl;
-}
-
-std::vector< std::vector<std::string> > Calendar::get_weeks (Day day)
-{
-	std::vector<std::string> dates = get_month_dates (day);
-	std::vector<std::vector<std::string>> buff;
-
-	// (<=) because last weeks has less than 7 days
-	for (int i = 0; i <= dates.size () / DAY_NUM; i++) {
-		std::vector<std::string> temp;
-
-		for (int j = 0; j < DAY_NUM; j++) {
-			if (i * DAY_NUM + j < dates.size())
-				temp.push_back (dates.at (i * DAY_NUM + j));
-		}
-
-		buff.push_back (temp);
 	}
 
-	return buff;
+	return weeks;
 }
 
 // Return vector of strings with all days of three months

@@ -22,6 +22,8 @@ Day::Day (Month month_var, int wday, int day)
 	day_num = day;
 }
 
+Day::Day () {}
+
 Day::~Day () {}
 
 inline int Day::day () { return day_num; }

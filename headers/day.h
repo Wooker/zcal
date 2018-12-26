@@ -19,6 +19,7 @@ class Day
 	std::string wday_str;
 
 public:
+	Day ();
 	Day (Month, int, int);
 	~Day ();
 
